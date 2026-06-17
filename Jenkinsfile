@@ -14,7 +14,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/PrathwishShetty03/AnsibleDemo.git'
+                git branch:"main", url: 'https://github.com/PrathwishShetty03/AnsibleDemo.git'
             }
         }
 
