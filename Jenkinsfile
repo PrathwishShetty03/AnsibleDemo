@@ -1,33 +1,39 @@
-pipeline { 
-agent any // Use any available agent 
-environment { 
-LANG = 'en_US.UTF-8' 
-LC_ALL = 'en_US.UTF-8' 
-} 
-tools { 
-maven 'Maven' // Ensure this matches the name configured in Jenkins 
-} 
-stages { 
-stage('Checkout') { 
-} 
-steps { 
-} 
-git url 'https://github.com/ShruthiBGowda/MavenAnsibleWebApp.git 
-stage('Build') { 
-steps { 
-} 
-} 
-sh 'mvn clean package' 
-stage('Archive') { 
-steps { 
-archiveArtifacts artifacts: 'target/*.war', fingerprint:true 
-} 
-}
-stage('Deploy') { 
-steps { 
-  sh 'mvn clean package' 
-sh 'ansible-playbook ansible/playbook.yml -i ansible/hosts.ini'
-} 
-} 
-} 
+pipeline {
+    agent any
+
+    environment {
+        LANG = 'en_US.UTF-8'
+        LC_ALL = 'en_US.UTF-8'
+    }
+
+    tools {
+        maven 'Maven'    // Must match the Maven tool name in Jenkins
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/ShruthiBGowda/MavenAnsibleWebApp.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Archive') {
+            steps {
+                archiveArtifacts artifacts: 'target/*.war', fingerprint: true
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh 'ansible-playbook ansible/playbook.yml -i ansible/hosts.ini'
+            }
+        }
+    }
 }
